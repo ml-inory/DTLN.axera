@@ -1,0 +1,7 @@
+onnx
+onnxruntime
+numpy
+onnx-simplifier
+soundfile
+librosa
+tqdm
