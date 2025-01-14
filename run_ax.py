@@ -26,10 +26,11 @@ model_output_names_1 = ("activation_2", "tf_op_layer_stack_2")
 model_inputs_1 = {"input_2": None, "input_3": model_1_state}
 
 # load models
-interpreter_2 = InferenceSession.load_from_model('./model_2.onnx')
+interpreter_2 = InferenceSession.load_from_model('./model_2.axmodel')
 model_2_state = np.zeros((1,2,128,2), dtype=np.float32)
 model_input_names_2 = ("input_4", "input_5")
 model_inputs_2 = {"input_4": None, "input_5": model_2_state}
+model_output_names_2 = ('conv1d_3', 'tf_op_layer_stack_5')
 
 # load audio file
 audio,fs = sf.read(args.input)
@@ -76,9 +77,9 @@ for idx in range(num_blocks):
     # run calculation
     model_outputs_2 = interpreter_2.run(input_feed=model_inputs_2)
     # get output
-    out_block = model_outputs_2[model_input_names_2[0]]
+    out_block = model_outputs_2[model_output_names_2[0]]
     # set out states back to input
-    model_inputs_2[model_input_names_2[1]] = model_outputs_2[model_input_names_2[1]]
+    model_inputs_2[model_input_names_2[1]] = model_outputs_2[model_output_names_2[1]]
     # shift values and write to buffer
     out_buffer[:-block_shift] = out_buffer[block_shift:]
     out_buffer[-block_shift:] = np.zeros((block_shift))
